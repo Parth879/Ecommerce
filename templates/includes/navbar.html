@@ -1,0 +1,74 @@
+{% load static %}
+
+<div class="navbar-inner">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <img src=" {% static 'images/alrlogo.png' %} " alt="images" class="bhuro">
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav text-center ml-auto">
+                    <li class="nav-item  mr-lg-2 mb-lg-0 mb-2">
+                        <a class="nav-link" href=" {% url 'index' %} ">Home
+                        </a>
+                    </li>
+                    <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
+                        <a class="nav-link" href=" {% url 'store' %} ">Shop</a>
+                    </li>
+                    <li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                           Categories
+                        </a>
+                        <div class="dropdown-menu">
+                                {% for category in links %}
+                                <a class="dropdown-item" href="{{ category.get_url }}">{{ category.category_name }} </a>
+                                {% endfor %}
+                            <hr>
+                            <a class="dropdown-item" href="{% url 'store' %}">All Categories</a>
+                        </div>
+                    </li>
+                    
+                    {% if user.id is None %}
+                    <li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            Profile
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                            <a class="dropdown-item" href="{% url 'register' %}">Signup</a>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Profile
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href=" {% url 'dashboard' %} ">Dashboard</a>
+                            <a class="dropdown-item" href=" # ">Orders Page</a>
+                            <a class="dropdown-item" href=" {% url 'logout' %} ">Logout</a>
+                            <a class="dropdown-item" href=" # ">Terms of use</a>
+                        </div>
+                    </li>   
+                    {% endif %}
+                    <li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            Page
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="# ">About Us</a>
+                            <a class="dropdown-item" href=" # ">Contact Us</a>
+                        </div>
+                    </li>
+                    
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>

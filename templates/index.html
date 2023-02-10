@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+	.category-item {
+		display: block;
+		position: relative;
+		color: #343a40;
+		transition: all 0.3s;
+	}
+
+	.category-item img {
+		transition: all 0.3s;
+	}
+
+	.category-item-title {
+		display: inline-block;
+		padding: 0.5rem 1rem;
+		background: #fff;
+		text-transform: uppercase;
+		letter-spacing: 0.07em;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		-webkit-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+		box-shadow: 0 0 5px rgb(0 0 0 / 7%);
+		font-size: 0.8rem;
+	}
+
+	.jassos {
+		height: 350px;
+		width: 490px;
+	}
+
+	
+	/* .yoyo {
+		background: url({% static "img/deal.jpg" %});
+	} */
+
+	.colorchange {
+			animation: colorchangeratnasagar 1s infinite;
+		}
+
+		@keyframes colorchangeratnasagar {
+			0% {
+				color: #f36f21;
+			}
+
+			25% {
+				color: #f36f21;
+				;
+			}
+
+			50% {
+				color: white;
+			}
+
+			100% {
+				color: #0d024c;
+			}
+		}
+
+	.self-btn{
+        height: 40px;
+        padding: 12px;
+        background-color: blue;
+        color: white;
+        border: none;
+    }
+    .self-btn:hover{
+        background-color: #f36f21;
+        color: black;
+        transition: 2s all ease;
+    }
+	
+</style>
+
+<!-- --------------------------------------------------- -->
+<!-- <div>
+	<section class="hero pb-3 bg-cover bg-center d-flex align-items-center yoyo">
+		<div class="container py-5">
+			<div class="row px-4 px-lg-5">
+				{% for trend in trending %}
+				<div class="col-lg-6 m-auto">
+					<p class="text-muted small text-uppercase mb-2">{{ trend.product_name}}</p>
+					<h1 class="h2 text-uppercase mb-3"><span class="colorchange"> Top Trending Prodducts</span></h1><a class="btn btn-dark"
+						href="{% url 'product-detail' trend.slug trend.id %}">Browse
+						collections</a>
+				</div>
+				<div class="col-lg-6">
+					<img src="{{trend.product_img.url}}" alt="product-img" class="img-fluid up-down">
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</section>
+</div> -->
+<!-- /----------------------------------------------------------------/ -->
+
+<div class="container">
+	<section class="hero mt-5 pb-3 bg-cover bg-center d-flex align-items-center" style="background: yellow;">
+		<div class="container py-5">
+			<div class="row px-4 px-lg-5">
+				<div class="col-lg-6">
+					<p class="text-muted small text-uppercase mb-2">New Inspiration 2020</p>
+					<h1 class="h2 text-uppercase mb-3">20% off on new season</h1>
+					<a class="btn btn-dark" href="{% url 'store' %}">Browse collections</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- TRENDING PRODUCTS-->
+	<section class="py-5">
+		<header class="section-heading">
+            <a href="{% url 'store' %}" class="btn btn-outline-primary float-right">See all</a>
+			<h2 class="h5 text-uppercase mb-4">Letest products</h2>
+
+		</header>
+		<div class="row">
+
+			{% for product in products %}
+			<div class="col-md-3">
+				<div class="card mt-5" style="height: 350px ;">
+					<a href="{{ product.get_url }}">
+						<img class="card-img-top" src="{{ product.images.url }}" alt="image" height="230px">
+						<div class="card-body mt-4">
+					  		<h5 class="card-title text-center">{{ product.product_name }}</h5>
+						</div>
+						
+					</a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</section>
+
+    <!-- CATEGORIES SECTION-->
+ 	<section class="pt-5 mb-5">
+		<header class="text-center">
+			<p class="small text-muted small text-uppercase mb-1">Carefully created collections</p>
+			<h2 class="h5 text-uppercase mb-4">Browse our categories</h2>
+		</header>
+		<div class="row">
+			{% if categories %}
+			{% for category in categories %}
+			<div class="col-md-3">
+				<div class="card" >
+					<a href="{% url 'category-products' category.slug %}">
+						<img class="card-img-top" src="{{ category.category_image.url }}" alt="image" height="230px">
+						<div class="card-body">
+					  		<h5 class="card-title ">{{category.title}}</h5>
+						</div>
+					</a>
+				</div>
+			</div>
+			{% endfor %}
+			{% endif %}
+		</div>
+	</section> 
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+
+<head>
+    <title>{% block title %} ALR {% endblock %}</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Custom-Files -->
+    <link href=" {% static 'css/bootstrap.css' %} " rel="stylesheet" type="text/css" media="all" />
+    <!-- Bootstrap css -->
+    <link href=" {% static 'css/style.css' %} " rel="stylesheet" type="text/css" media="all" />
+    <!-- Main css -->
+    <link rel="stylesheet" href=" {% static 'css/fontawesome-all.css' %} ">
+    <!-- Font-Awesome-Icons-CSS -->
+    <link href=" {% static 'css/menu.css' %} " rel="stylesheet" type="text/css" media="all" />
+    <link href=" {% static 'css/font-all.css' %} " rel="stylesheet" type="text/css" media="all" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- ------------------------------------------------------------------------------- -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <!-- -------------------------------------------------------------------------------------- -->
+
+    <!-- web fonts -->
+    <link
+        href="http://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet">
+    <!-- //web fonts -->
+    <meta name="robots" content="noindex">
+
+    <!--=========================== this is alertify message link css ===========================-->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+    <!-- =======================================end here ===========================================-->
+
+    <!--Favicon-->
+    <link rel="shortcut icon" href="{% static 'images/alrlogo.png' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'images/alrlogo.png' %}" type="image/x-icon">
+
+    <style>
+        .img-top {
+            height: 80px;
+            width: 200px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- header-bottom-->
+    <div class="header-bot my-md-4 my-3" id="site-header">
+        <div class="container">
+            <div class="row header-bot_inner_wthreeinfo_header_mid align-items-center">
+                <!-- logo -->
+                <div class="col-lg-3 col-md-4 logo_agile">
+                    <h1>
+                        <a href=" {% url 'index' %} ">
+                            <img src="{% static 'images/alrlogo.png' %}" alt="images" class="img-top">
+                        </a>
+                    </h1>
+                </div>
+                <!-- //logo -->
+                <!-- header-bot -->
+                <div class="col-lg-9 col-md-8 header">
+                    <div class="row">
+                        <!-- search -->
+                        <div class="col-lg-9 col-sm-8 agileits_search">
+                            <form class="form-inline" action="{% url 'search' %}" method="get" style="max-width:600px;">
+                                <input class="form-control" type="search" name="keyword"
+                                    placeholder="Search for products" aria-label="Search" required>
+                                <button class="btn" type="submit"><i class="fa fa-search"
+                                        aria-hidden="true"></i></button>
+                            </form>
+                        </div>
+                        <!-- //search -->
+
+                        <!-- cart details -->
+                        <div
+                            class="col-lg-3 col-sm-4 top_nav_right text-center mt-sm-0 mt-2 d-flex align-items-center justify-content-between">
+                            <div></div>
+                            <div class="cart-store">
+                                <a href=""><i class="far fa-heart"></i></a>
+                            </div>
+                            <div class=" cart cart box_1">
+                                <a href="{% url 'cart' %}" class="widget-header pl-3 ml-3">
+                                    <div class="rounded-circle position-relative fs-1"><i class="fa fa-shopping-cart"></i>
+                                    </div>
+                                    <span class="badge rounded-pill position-absolute top-0 start-100 badge-danger ">{{cart_count}}</span>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- //cart details -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% include 'includes/navbar.html' %}
+    {% block content %}
+
+
+    {% endblock %}
+
+    {% include 'includes/footer.html' %}
+
+    <!-- js -->
+    <script src=" {% static 'js/jquery-1.11.1.min.js' %} "></script>
+    <!-- //js -->
+    <!-- nav smooth scroll -->
+    <script>
+        $(document).ready(function () {
+            $(".dropdown").hover(
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideDown("fast");
+                    $(this).toggleClass('open');
+                },
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideUp("fast");
+                    $(this).toggleClass('open');
+                }
+            );
+        });
+    </script>
+    <!-- //nav smooth scroll -->
+
+    <!-- popup modal (for location)-->
+    <script src=" {% static 'js/jquery.magnific-popup.js' %} "></script>
+    <script>
+        $(document).ready(function () {
+            $('.popup-with-zoom-anim').magnificPopup({
+                type: 'inline',
+                fixedContentPos: false,
+                fixedBgPos: true,
+                overflowY: 'auto',
+                closeBtnInside: true,
+                preloader: false,
+                midClick: true,
+                removalDelay: 300,
+                mainClass: 'my-mfp-zoom-in'
+            });
+
+        });
+    </script>
+    <!-- //popup modal (for location)-->
+    <!-- disable body scroll which navbar is in active -->
+    <script>
+        $(function () {
+            $('.navbar-toggler').click(function () {
+                $('body').toggleClass('noscroll');
+            })
+        });
+    </script>
+
+    <!-- //disable body scroll which navbar is in active -->
+
+    <script src=" {% static 'js/bootstrap.min.js' %} "></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <script src="{% static 'js/font.js' %}"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <script type="">
+	alertify.set('notifier','position', 'top-right');
+	{% for msg in messages %}
+		alertify.success('{{ msg }}');
+	{% endfor %}
+</script>
+    <!-- End here -->
+    <!-- End Alertify mas -->
+    {% block scripts %}
+    {% endblock scripts %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,514 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .give_r {
+        border-left: 2px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .single-review {
+        border: 2px solid #ccc !important;
+        background-color: #eee;
+        border-radius: 5px;
+        padding: 14px;
+        margin: 6px 0;
+        font-size: 16px;
+    }
+
+    .single-review::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+    .single-review span {
+        font-size: 18px;
+        margin-right: 0px;
+    }
+
+    @media (max-width: 500px) {
+        .single-review {
+            text-align: center;
+        }
+    }
+
+    /* rating */
+
+    .rate>input {
+        display: none;
+    }
+
+    .rate {
+        display: inline-block;
+        border: 0;
+    }
+
+    .rate>label {
+        float: right;
+    }
+
+    /* Showing Star */
+
+    .rate>label:before {
+        display: inline-block;
+        font-size: 1.1rem;
+        font-family: FontAwesome;
+        content: "\f005";
+        margin: 0;
+        padding: 0.3rem .2rem;
+        cursor: pointer;
+    }
+
+    .rate .half:before {
+        content: "\f089";
+        position: absolute;
+        padding-right: 0;
+    }
+
+    /* Click and Hover */
+    input:checked~label,
+    label:hover~label {
+        color: #ffb503;
+    }
+
+    /* Hover hightlight */
+    input:checked+label:hover,
+    input:checked~label:hover,
+    input:checked~label:hover~label,
+    label:hover~input:checked~label {
+        color: #cc9000;
+    }
+
+    .rating-star i {
+        color: #ffb503 !important;
+    }
+
+
+    .imgBox {
+        height: 100%;
+        width: 100%;
+    }
+
+    .quantity {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+        font-family: inherit;
+        border: 1px solid #504545;
+        padding: 1px;
+    }
+
+    .quantity input {
+        width: 2rem;
+        text-align: center;
+        color: black;
+    }
+
+    .quantity button {
+        background: none;
+        border: none;
+        width: 2rem;
+        outline: none;
+    }
+
+    .qtu-stock {
+        height: 30px;
+        width: 100px;
+        border-radius: 50px;
+        padding: 7px;
+    }
+
+    /* style="height: 32px;width: 20px;"  radio style */
+    /* color design */
+
+    .hidebx {
+        /* border-radius: 50%; */
+        /* color: white; */
+        margin-left: 4px;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        transition: 1s all ease-out;
+
+    }
+
+    /* size select design */
+    .sizeselected {
+        padding: 5px 19px;
+        color: #333333;
+        background-color: #eeeeee;
+        border: 1px solid #a5a3a3;
+        cursor: pointer;
+        border-radius: 5px;
+
+        padding-right: 30px;
+        width: 120px;
+    }
+
+    .sizeselected:focus,
+    .sizeselected:hover {
+        outline: none;
+        border: 1px solid #bbbbbb;
+    }
+
+    .sizeselected option {
+        background: #ffffff;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+
+<section class="">
+    <div class="container">
+        <div class="card product_data mb-3">
+            <div class="container-fliud">
+                <div class="wrapper row">
+                    <!-- Img section -->
+                    <div class="preview col-md-6">
+
+                        <div class="preview-pic tab-content">
+                            <div class="tab-pane imgBox active" id="pic-1">
+                                <img id="xzoom" src="{{ single_product.images.url }}" />
+                                <div class="magnifier-lens"></div>
+                            </div>
+                        </div>
+                        <ul class="preview-thumbnail nav nav-tabs kaizer">
+                            <li class="active border border-dark mt-2"><a target="imgBox" href="{{ single_product.images.url }}" data-toggle="tab">
+                                <img src="{{ single_product.images.url }}" /></a></li>
+                            {% for pi in product_gallery %}
+                            <li class="active mt-2 border border-dark"><a target="imgBox" href="{{ pi.image.url }}" data-toggle="tab">
+                                <img src="{{ pi.image.url }}" /></a></li>
+                            {% endfor %}
+                        </ul>
+
+                    </div>
+                    <!-- Detail product section -->
+                    <div class="details col-md-6">
+                            <!-- {% csrf_token %} -->
+                            <h3 class="product-title">{{ single_product.product_name }}</h3>
+                            <div class="rating">
+                                <div class="rating-star">
+                                    <span>
+                                    <i class="fa fa-star{% if single_product.averageReview < 0.5 %}-o {% elif single_product.averageReview >= 0.5 and single_product.averageReview < 1 %}-half-o {% endif %}"></i>
+                                    <i class="fa fa-star{% if single_product.averageReview < 1.5 %}-o {% elif single_product.averageReview >= 1.5 and single_product.averageReview < 2 %}-half-o {% endif %}"></i>
+                                    <i class="fa fa-star{% if single_product.averageReview < 2.5 %}-o {% elif single_product.averageReview >= 2.5 and single_product.averageReview < 3 %}-half-o {% endif %}"></i>
+                                    <i class="fa fa-star{% if single_product.averageReview < 3.5 %}-o {% elif single_product.averageReview >= 3.5 and single_product.averageReview < 4 %}-half-o {% endif %}"></i>
+                                    <i class="fa fa-star{% if single_product.averageReview < 4.5 %}-o {% elif single_product.averageReview >= 4.5 and single_product.averageReview < 5 %}-half-o {% endif %}"></i>
+                                </span>
+                                </div>
+                                <span class="review-no">{{ single_product.countReview }} reviews</span>
+                            </div>
+                            <p class="product-description">{{ single_product.description }}</p>
+                            <h4 class="price"> price: <span>&#8377; &nbsp;
+                                    {% if variant.price %}
+                                    {{ variant.price }}
+                                    {% else %}
+                                    {{ single_product.price}}
+                                    {% endif %}
+                                </span></h4>
+                            <p class="vote"><strong>91%</strong> of buyers enjoyed this product! <strong>(87
+                                    votes)</strong>
+                            </p>
+
+                            <!------------------------ Size And Color start heaer --------------------------->
+
+                            <!-- <h5 class="sizes">Choose Size :
+                          <select name="size" class="ml-2">
+                              <option value="" disabled selected>Select</option>
+                              {% for rs in single_product.productvariation_set.size %}
+                              <option value="{{ rs.size | lower }}">{{ rs.size | capfirst }}</option>
+                              {% endfor %}
+                          </select>
+                        </h5>
+
+                        <h5 class="sizes">Choose Color :
+                          <select name="size" class="ml-2">
+                              <option value="" disabled selected>Select</option>
+                              {% for rs in single_product.variation_set.colors %}
+                              <option value="{{ rs.variation_value | lower }}">{{ rs.variation_value | capfirst }}</option>
+                              {% endfor %}
+                          </select>
+                        </h5> -->
+                            <script>
+                                $(document).on('change', '#post-form', function (e) {
+                                    e.preventDefault();
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '{% url "ajaxcolor" %}',
+                                        data: {
+                                            productid: $('#productid').val(),
+                                            size: $('#size').val(),
+                                            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                                            action: 'post'
+                                        },
+                                        data_type: 'html',
+                                        success: function (data) {
+                                            console.log("success");
+                                            $('#appendHere').html(data.rendered_table);
+                                        },
+                                        error: function (data) {
+                                            alert("Got an error dude " + data)
+                                        }
+                                    });
+                                });
+                            </script>
+
+                            <form method="post" id="post-form">{% csrf_token %}
+                                <input type="hidden" name="productid" id="productid" value="{{ single_product.id }}">
+                                <h5 class="sizes">Size &nbsp;
+                                    <select name="size" id="size" class="ml-2 sizeselected">
+                                        {% for rs in sizes %}
+                                        <option {% if variant.size_id == rs.size_id %} selected {% endif %}
+                                            value="{{ rs.size_id }}">{{ rs.size.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </h5>
+                            </form>
+
+                            <form method="post" action="?q=selectvariant" id="post-color">{% csrf_token %}
+                                <div id="appendHere">
+                                    <input type="hidden" name="size" id="size" value="{{ size_id }}">
+                                    <h5 class="sizes">Color &nbsp;
+                                        {% for color in colors %}
+                                        <button type="submit" {% if variant.id == color.id %} checked {% endif %}
+                                            name="variantid" id="variantid" value="{{ color.id }}"
+                                            onchange="this.form.submit();" class="btn btn-outline-dark hidebx">{{color.color.name}}</button>
+                                            
+                                        {% endfor %}
+                                    </h5>
+                                </div>
+                            </form>
+
+                            <h6 class="sizes">Selected : &nbsp;
+                                Size = {{ variant.size }} &nbsp;,&nbsp; Color = {{ variant.color }}</h6>
+                            <!--------------------- End Here---------------------------------------------->
+
+                            <h5 class="Quantity d-flex">Quantity:
+                                <div class="quantity ml-3">
+                                    <button class="dec-btn p-0 ">-</button>
+                                    <input name="quantity" class="form-control qty-input border-0 shadow-0 p-0"
+                                        type="text" disabled value="1">
+                                    <button class="inc-btn p-0 ">+</button>
+                                </div>
+                            </h5>
+                            <div class="m-2">
+                                {% if single_product.stock > 0 %}
+                                <label class="badge bg-success btn qtu-stock">In stock</label>
+                                {% else %}
+                                <label class="badge bg-danger btn qtu-stock">Out of stock</label>
+                                {% endif %}
+                            </div>
+                            <div class="action">
+                                {% if single_product.stock <= 0 %} 
+                                    <h5 class="text-danger"></h5>
+                                {% else %}
+                                    <form action="{% url 'add_cart' single_product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="variantid" id="variantid" value="{{ variant.id }}">
+                                        <button type="submit" class="btn  btn-primary"> <span class="text">Add to
+                                                    cart</span> <i class="fas fa-shopping-cart"></i> </button>
+                                    </form>
+                                    <!-- <a href="{% url 'add_cart' single_product.id %}" class="btn  btn-primary">Add to cart<i class="fas fa-shopping-cart"></i></a> -->
+                                {% endif %}
+                            </div>
+                            <div class="magnified-img"></div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- DETAILS TABS-->
+        <ul class="nav nav-tabs " id="myTab" role="tablist">
+            <li class="nav-item"><a class="nav-link active" id="description-tab" data-toggle="tab" href="#description"
+                    role="tab" aria-controls="description" aria-selected="true">Description</a></li>
+        </ul>
+        <div class="tab-content mb-5" id="myTabContent">
+            <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+                <div class="p-4 p-lg-5 bg-white">
+                    <h6 class="text-uppercase">Product description </h6>
+                    <p class="text-muted text-small mb-0">{{product.detail_description}}</p>
+                </div>
+            </div>
+
+        </div>
+
+        {% if related_products %}
+        <h2 class="h5 text-uppercase mb-4">Related products</h2>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            {% for rp in related_products %}
+            <!-- PRODUCT-->
+            <!-- <div class="col-md-3 product-men">
+                <div class="men-pro-item simpleCart_shelfItem mt-3" style="height: 410px;">
+                    <div class="men-thumb-item text-center">
+                        <a class="d-block" href="{{ rp.get_url }}">
+                            <img class="img-fluid" src="{{rp.images.url}}" alt="{{rp.title}}">
+                        </a>
+                    </div>
+                    <div class="item-info-product text-center row mt-3">
+                        <div class="col">
+                            <h4 class="">
+                                <b>{{ rp.product_name }}</b>
+                            </h4>
+                            <div class="info-product-price mt-2">
+                                <span class="item_price">&#8377; {{ rp.price }}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div> -->
+            <div class="col">
+                <a href="{{ rp.get_url }}">
+                <div class="card">
+                  <img src="{{rp.images.url}}" class="card-img-top" alt="{{rp.title}}">
+                  <div class="card-body">
+                    <h5 class="card-title text-center">{{ rp.product_name }}</h5>
+                    <p class="card-text fs-2 fw-bold text-center">&#8377; {{ rp.price }}</p>
+                  </div>
+                </div>
+                </a>
+              </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="container mb-5"><br><br>
+            <ul class="nav nav-tabs ptabs">
+                <li class="nav-item">
+                    <a href="#rev" class="nav-link active" data-toggle="tab">Reviews ({{all_rev.count}})</a>
+                </li>
+            </ul>
+
+            <div class=" tab-content container">
+                <div class="tab-pane active" id="rev">
+                    <div class="row mt-3">
+                        <div class="col-lg-6 col-md-6">
+                            {% if rprod %}
+                            {% for rev in rprod %}
+                            <div class="single-review "
+                                style="border: 2px solid #ccc !important;
+                                background-color: #eee; border-radius: 5px; padding: 14px; margin: 6px 0;font-size:16px;">
+                                <p><span><i class="fa fa-user pr-2"></i>{{rev.subject}}</a></span>
+                                    <i class="fa fa-clock pr-1 pl-2"></i>{{rev.date}}
+                                <p class="rating-star">
+                                    <i class="fa fa-star{% if rev.rating == 0.5 %}-half-o {% elif rev.rating < 1 %}-o {% endif %}"></i>
+                                    <i class="fa fa-star{% if rev.rating == 1.5 %}-half-o {% elif rev.rating < 2 %}-o {% endif %}"></i>
+                                    <i class="fa fa-star{% if rev.rating == 2.5 %}-half-o {% elif rev.rating < 3 %}-o {% endif %}"></i>
+                                    <i class="fa fa-star{% if rev.rating == 3.5 %}-half-o {% elif rev.rating < 4 %}-o {% endif %}"></i>
+                                    <i class="fa fa-star{% if rev.rating == 4.5 %}-half-o {% elif rev.rating < 5 %}-o {% endif %}"></i>
+                                </p>
+                                </p>
+
+                                <div class=" text-left">{{rev.review}}</div>
+                            </div>
+
+                            {% endfor %}
+                            <div class="row mt-3 ">
+                                <nav aria-label="page-navigation">
+                                    <ul class="pagination">
+                                        {% if rprod.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link text-success"
+                                                href="?page={{rprod.previous_page_number}}" aria-label="Previous">
+                                                <span area-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                        {% endif %}
+
+                                        <li class="page-item "><a class="page-link text-success"
+                                                href="#">{{rprod.number}}</a></li>
+
+                                        {% if rprod.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link text-success" href="?page={{rprod.next_page_number}}"
+                                                aria-label="Next">
+                                                <span area-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+
+                            {% else %}
+                            <div class="mt-5 ">
+                                <h3 class="font-weight-bold">No Reviews...</h3>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 give_r">
+                            <h4 class="text-uppercase mb-4"><b>write your review :</b></h4>
+                            <form action="{% url 'review' single_product.id %}" method="post" class="review-form">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="subject"
+                                        placeholder="Enter Subject..." required />
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control" name="review" placeholder="Your Review..."
+                                        required></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-rating row pl-3">
+                                        <strong class="text-uppercase mt-2">Your Rating :</strong>
+                                        <div class="stars rate mx-2">
+                                            <input type="radio" name="rating" id="rating10" value="5" required /><label
+                                                for="rating10" title="5"></label>
+                                            <input type="radio" name="rating" id="rating9" value="4.5" required /><label
+                                                for="rating9" title="4.5" class="half"></label>
+                                            <input type="radio" name="rating" id="rating8" value="4" required /><label
+                                                for="rating8" title="4"></label>
+                                            <input type="radio" name="rating" id="rating7" value="3.5" required /><label
+                                                for="rating7" title="3.5" class="half"></label>
+                                            <input type="radio" name="rating" id="rating6" value="3" required /><label
+                                                for="rating6" title="3"></label>
+                                            <input type="radio" name="rating" id="rating5" value="2.5" required /><label
+                                                for="rating5" title="2.5" class="half"></label>
+                                            <input type="radio" name="rating" id="rating4" value="2" required /><label
+                                                for="rating4" title="2"></label>
+                                            <input type="radio" name="rating" id="rating3" value="1.5" required /><label
+                                                for="rating3" title="1.5" class="half"></label>
+                                            <input type="radio" name="rating" id="rating2" value="1" required /><label
+                                                for="rating2" title="1"></label>
+                                            <input type="radio" name="rating" id="rating1" value="0.5" required /><label
+                                                for="rating1" title="0.5" class="half"></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    {% if user.is_authenticated %}
+                                    <button type="submit" class="btn btn-success"
+                                        style="border-color: #fff">Submit</button>
+                                    {% else %}
+                                    <p>You must be logged in to post review. <span><a
+                                                href="{% url 'login' %}">Login</a></span></p>
+                                    {% endif %}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- RELATED PRODUCTS-->
+
+    </div>
+</section>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.kaizer a').mouseover(function (e) {
+            e.preventDefault();
+            $('.imgBox img').attr("src", $(this).attr("href"));
+        })
+    })
+</script>
+<script src="{% static 'js/incdec.js' %}"></script>
+
+
+
+{% endblock content %}

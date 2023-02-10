@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .jago {
+        height: 100px;
+        margin-left: 155px;
+        margin-top: 25px;
+    }
+
+    .nala {
+        color: #fff;
+        background-color: #f36f21;
+    }
+
+    .nala:hover {
+        color: #f36f21;
+        background-color: #837ea3;
+    }
+</style>
+
+    <section class=" bg-image" style="background:#fafafa;">
+        <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+            <div class="container h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                        <div class="card mt-5 mb-5" style="border-radius: 15px;">
+                            <a href="{% url 'index' %}">
+                                <img src=" {% static 'images/alrlogo.png' %} " alt="images" class="jago">
+                            </a>
+                            <div class="card-body p-5">
+                                <h2 class=" text-center mb-4">Create an Account</h2>
+                                <form action="{% url 'register' %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                    <div class="form-outline form-row mb-4">
+                                        <div class="col form-group">
+                                            <label>First name</label>
+                                              {{ form.first_name }}
+                                        </div>
+                                        <div class="col form-group">
+                                            <label>Last name</label>
+                                            {{ form.last_name }}
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb-4">
+                                        <div class="form-group col-md-6">
+                                            <label>Email Address</label>
+                                            {{ form.email}}
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                          <label>Phone Number</label>
+                                          {{ form.phone_number }}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-outline mb-4">
+                                        <label>Enter Password</label>
+                                        {{ form.password }}
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <label>Repeat  Password</label>
+                                        {{ form.confirm_password }}
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-center">
+                                        <button type="submit" class="btn nala btn-block btn-lg gradient-custom-4 text-body">
+                                            Register
+                                        </button>
+                                    </div>  
+                                    <p class="text-center text-muted mt-4 mb-0">Have already an account?
+                                        <a href="{% url 'login' %}" class="fw-bold text-body text-uppercase"><b><u>Login here</u></b></a>
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}  

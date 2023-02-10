@@ -1,0 +1,9 @@
+<input type="hidden" name="size" id="size" value="{{ size_id }}">
+<h5 class="sizes">Color
+    {% for color in colors %}
+        
+        <button type="submit" name="variantid" id="variantid" value="{{ color.id }}"
+            onchange="this.form.submit();" class="btn btn-outline-dark hidebx">
+            {{color.color.name}}</button>
+    {% endfor %}
+</h5>

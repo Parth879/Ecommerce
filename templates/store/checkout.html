@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .coustom label {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .coustom input {
+        font-size: 14px;
+    }
+</style>
+<div class="container mt-4 mb-4">
+    <form action="{% url 'place_order' %}" method="post">{% csrf_token %}
+        <div class="row">
+            <div class="col-md-7">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h6>Basic Details</h6>
+                        <hr>
+                        <div class="row coustom">
+                            <div class="col-md-6">
+                                <label>First Name</label>
+                                <input type="text" class="form-control" name="first_name" placeholder="Enter first name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Last Name</label>
+                                <input type="text" class="form-control" name="last_name" placeholder="Enter Last name" required>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <label>Email</label>
+                                <input type="email" class="form-control" name="email" placeholder="Enter Email" required>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <label>Phone Number</label>
+                                <input type="text"  class="form-control" name="phone" placeholder="Enter Phone" required>
+                            </div>
+                            
+                            <div class="col-md-6 mt-2">
+                                <label>Address Line 1</label>
+                                <input type="text" class="form-control" name="address_line_1" placeholder="Enter Address" required>
+                            </div>
+                            <div class="col-md-6 mt-2">
+                                <label>Address Line 2</label>
+                                <input type="text" class="form-control" name="address_line_2" placeholder="Enter Address">
+                            </div>
+                            <div class="col-md-4 mt-2">
+                                <label>City</label>
+                                <input type="text" class="form-control" name="city" placeholder="Enter City" required>
+                            </div>
+                            <div class="col-md-4 mt-2">
+                                <label>State</label>
+                                <input type="text"  class="form-control" name="state" placeholder="Enter State" required>
+                            </div>
+                            <div class="col-md-4 mt-2">
+                                <label>Country</label>
+                                <input type="text" class="form-control" name="country" placeholder="Enter Country" required>
+                            </div>
+                            
+                            <div class="col-md-12 mt-2">
+                                <label>Order Note</label>
+                                <textarea class="form-control" name="order_note"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h6>Order Summary</h6>
+                        <hr>
+                        {% if cart_items %}
+                        <table class="table table-stripeds table-bordereds">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cart_item in cart_items %}
+                                <tr>
+                                    <td>
+                                        <img src="{{ cart_item.product.images.url }}" class="me-2" height="50px" width="50px">
+                                        {{ cart_item.product.product_name }} 
+                                        <br>
+                                        &nbsp;Size {{cart_item.variant.size}} ,&nbsp;Color {{cart_item.variant.color}}
+                                    </td>
+                                    <td>{{ cart_item.quantity}}</td>
+                                    <td>
+                                        {{ cart_item.price }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <h6 class="fw-bold">Grand Total
+                            <span style="float: right;">Rs {{ grand_total }}</span>
+                        </h6>
+                        <input type="hidden" value="COD" name="payment_mode">
+                        <div class="mt-3 ">
+                            <button type="submit" class="btn btn-success w-100">COD | Place Order</button>
+                        </div>
+                        {% else %}
+                        <h4>Your cart is empty</h4>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
